@@ -42,6 +42,7 @@ game.addEventListener("keyup", ev => {
     const expected = currentLetter?.innerHTML || ' ';
     const isLetter = key.length === 1 && key !== " ";
     const isSpace = key === ' ';
+    const isBackspace = key === 'Backspace';
 
     console.log({key, expected});
 
@@ -75,14 +76,34 @@ game.addEventListener("keyup", ev => {
         }
         addClass(currentWord.nextSibling.firstChild, "current");
     }
+    if (isBackspace) {
+        if(currentLetter){
+            const prevSibling = currentLetter.previousSibling;
+            removeClass(currentLetter, 'current', 'correct', 'incorrect');
+            if (prevSibling) {
+                addClass(prevSibling, 'current');
+                removeClass(prevSibling, 'correct', 'incorrect');
+            }
+        }
+        if(currentWord.previousSibling && currentWord.firstChild.className === 'word current'){
+            removeClass(currentWord, 'correct', 'incorrect');
+            removeClass(currentWord.firstChild, 'correct', 'incorrect');
+            addClass(currentWord.previousSibling, 'current');
+            addClass(currentWord.previousSibling.lastChild, 'current');
+        }
+        if(currentWord.lastChild.className !== "letter current"){
+            removeClass(currentWord.lastChild, 'correct', 'incorrect');
+            addClass(currentWord.lastChild, 'current');
+        }
+        
+    }
 
     // cursor move
     const nextLetter = document.querySelector('.letter.current');
-    if(nextLetter){
-        cursor.style.position = "fixed"
-        cursor.style.left = nextLetter.getBoundingClientRect().left + "px";
-        cursor.style.top = nextLetter.getBoundingClientRect().top + "px";
-    }
+    const nextWord = document.querySelector('.word.current');
+    cursor.style.position = 'fixed';
+    cursor.style.top = (nextLetter || nextWord).getBoundingClientRect().top + "px";
+    cursor.style.left = (nextLetter || nextWord).getBoundingClientRect()[nextLetter ? "left" : "right"] + "px";
 
 })
 
