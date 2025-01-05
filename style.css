@@ -13,13 +13,17 @@ body{
     font-size: 1.4rem;
 }
 main{
-    width: 600px;
+    width: 1400px;
     margin: 50px auto;
 }
 h1{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 50px;
     color: var(--primaryColor);
 }
-h1 svg{
+h1 img{
     width: 40px;
 }
 #header{
@@ -129,4 +133,10 @@ div.word{
 }
 #game.over #focus-error {
     display: none;
+}
+
+@media screen and (max-width: 1400px) {
+    main{
+        width: 100%;
+    }    
 }
